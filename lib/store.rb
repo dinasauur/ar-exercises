@@ -1,15 +1,15 @@
 class Store < ActiveRecord::Base
   has_many :employees
-  # after_create "log_new_store"
-  # after_update "log_update"
 
-  # private
-  # def log_new_store
-  #   puts "A new store was created"
-  # end
+  validates :name, length: { minimum: 3 }
+  validates :annual_revenue, numericality: { greater_than_or_equal_to: 0 }
+  validates :must_carry_mens_or_womens_apparel
 
-  # def log_update
-  #   puts "Store has been updated"
-  # end
+  def must_carry_mens_or_womens_apparel
+    unless mens_apparel || womens_apparel
+      errors.add(:mens_apparel, "must carry at least one of the men's or women's apparel")
+      errors.add(:womens_apparel, "must carry at least one of the men's or women's apparel")
+    end
+  end
 
 end
