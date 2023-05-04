@@ -3,10 +3,11 @@ class Store < ActiveRecord::Base
 
   validates :name, length: { minimum: 3 }
   validates :annual_revenue, numericality: { greater_than_or_equal_to: 0 }
-  validates :must_carry_mens_or_womens_apparel
+  validate :must_carry_mens_or_womens_apparel
+  # custom validation method, so no s in "validate"
 
   def must_carry_mens_or_womens_apparel
-    unless mens_apparel || womens_apparel
+    if !mens_apparel && !womens_apparel
       errors.add(:mens_apparel, "must carry at least one of the men's or women's apparel")
       errors.add(:womens_apparel, "must carry at least one of the men's or women's apparel")
     end
